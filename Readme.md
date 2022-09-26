@@ -1,0 +1,171 @@
+## Credits
+In 2019, I watched a video recorded for a webinar by Mark Volkmann of Object Computing (OCI), titled __MODERN JAVASCRIPT TOOLING__. 
+The tools, concepts and code presented inspired me to create this project.   
+
+I am not expert in modern javascript, as you will later discover from my javascript code, but my goal is to create a simple javascript application that beginners can use as a starting point for creating dummy apis for rapid prototyping and testing.  
+
+## Motivation
+Many applications are made up of layers or components, the front end, the backend, the database, etc.
+some of the most difficult issues in application development is integrating with all the layers.  
+
+Integration issues arise because of dependencies and can be strongly felt at the initial stage of development when many  of the components are still under development
+
+For instance, consider a simple application made up of a web tier consuming data from an backend api. Initially the web tier cannot make much progress because the api is not available.  
+  
+In some cases the api may be ready but it may be on a remote server and requires connectivity and access tokens. It often turn out that the api is also administered by a different group, and therefore as a consumer you may not be able to create your own test data to use.  
+  
+This create a huge dependency issue that most junior developer often don't know how to work around and simply wait till the have something to work with. This results in many wasted hours development time and pushes all the work to the final weeks of the project.  
+
+In remote work environments where there is often large time differences between clients and developers, teams may ecounter issues and get the get the right support at the right time.  For remote developers to remain productive they need to learn techniques to reduce development dependencies.  But how does one do that? 
+The idea is to duplicate the development environment locally as much as possible. With technologies like docker, it is much easier to create such environments locally that it was a few years ago.
+
+For instance, the whole backend api can be dockerized and shared so that developers can run it locally. Another method would be to create a dummy api that serves data similar to what the real api will serve. This gives you, the developer a lot of flexilibity especially when creating test data.  
+
+This project shows how Node can be used to create a simple dummy api for testing while the actual api is still in development. In oder to create a dummy api that resemebles the actual one, we need to define the api endpoints and the schema very quickly during the project. Tools like OpenApi can be very helpful in this case.  
+  
+Even if developers are not familiar with how to use OpenApi to describe api endpoints, you should be able to use json to create sample data of what is expected from th api.
+
+
+## Scenario;
+Lets assume we are developing backend api to serve students data. We have a large number of students in a database and you are building an api to serve that data.
+Each student record has the following attributes:
+
+| property      | description |
+| ----------- | ----------- |
+| FirstName | student first name |
+| LastName | student last name |
+| DateAdded | date student was added |
+| DateAdded | student status 1 is active, 0 is inactive |
+
+## Action we expect the api to allow
+| property      | description |
+| ----------- | ----------- |
+| list students | list students, if there are thousands of students, do not return all at once, we want the api to return a few at a time (paginated list) |
+| list students by status| list all students with a given status. e.g. list all active students. Again, we do not return all data at once, we want the api to return a few at a time (paginated list)  |
+| find student | find a student wih a given id, e.g. find student with id 100 |
+
+
+## putting the application together
+
+### create a sample dummy data
+The next task is to create sample data using json in the same format that the real api will return. This allows us to create code on front wnd that work with the data as if its coming from the real api.
+
+The application serves hardcoded dummy data (json) via api. Node ExpressJs is used as the http server, with the api endpoints designed to mimic a real api endpoints. 
+In doing so, I designed the api endpoints and the returned data as what I would expect of a good api.  
+
+```json
+ [
+	{
+		"ID": 100, "UniqueID": 
+		"FirstName": "John",  
+		"LastName": "Bayor",  
+		"DateAdded":"2022-09-10", 
+		"IsActive": 1
+	},
+	{ 
+		"ID": 101,
+		"FirstName": "Marie", 
+		"LastName": "Mavais", 
+		"DateAdded":"2022-07-15", 
+		"IsActive": 1
+	}
+
+ ]
+```
+
+### Define the api endpoint
+api/student
+
+### define the urls and methods
+Now define the urls that will be used to access the data. This urls should be the same as the ones the real api will use.
+Remember, you don't need the entire api schema to get started. Start by getting the api designer to provide a few of the important endpoints and their schema.  
+
+In this example we will create an api that returns student data. Three methods will be implemented:  
+ - list all students (with pagination)
+ - find student using an id
+ - list students with a given status (with pagination)
+ 
+| url      | description |
+| ----------- | ----------- |
+| api/student/list/      | list students with pagination, e.g. _api/student/list/page/1_  |
+| api/student/id  | find a student given an id,  e.g. _api/student/100_  |
+| api/student/status_id    | list all students with a given status (1 is active, 0 is inactive), e.g. _api/student/status/1_ |
+|  |  |  
+
+These three methods could provide the web team something to start with and establish the code for interacting with an api which is going to be needed when the final api is ready.
+
+
+
+## How the app is constructed
+
+1. the application is made up of four components:
+     - **app.js** - application entry point
+     - **controller** (students-controller.js) -  to intercept requests from the browser, *expressjs* calls the controllers routers, see **app_modules/controllers**  
+     - **services** (StudentsService) - which include methods for serving data. currently the data is hardcoded in the services, and are encapsulated in the controller.
+       - the services are TypeScript files and are compiled and copied to the app_modules folder during build
+     - **commonLib** - the file contains shared functions used in the controller
+
+2. the **app.js**:
+      - the app.js file lives at the root of the project 
+      - at runtime, it creates the expressjs object
+      - loads the controller, the controller loads the service 
+      - starts http server on a selected port
+  
+3. source and output folders:  
+	- all sourfce files are in nthe __src__ folder  
+	- when the app builds, it copies all files needed to run the app into the __app_modules__ folder 
+	
+
+![app structure](https://github.com/kowusu01/simple_js_webapi/blob/main/docs/SimpleJsApiStructure.jpg?raw=true)
+
+  
+## How to execute the app
+note: all commands are executed in the bash terminal
+1. execute ` npm update `
+2. execute ` npm run build-all `
+3. execute 
+     ` node app.js `  or     ` npm run start `    or    `nodemon app.js ` 
+     
+- Note: nodemon is a js package to monitor files so you can edit js files, save and refresh the browser while running
+- you may have to manually install nodemon  ( npm install -g nodemon )
+- when the app starts, take note of the url : e.g. localhost:8080/api/your-endpoint
+- enter the url in a browser to test
+- check the code to see where you can customize it
+  
+
+## Sample responses
+### list students
+- http://localhost:3500/api/student/list
+- curl http://localhost:3500/api/student/list/page/1
+
+  
+### list students with status active (status=1)
+- http://localhost:3500/api/student/status/1
+- curl http://localhost:3500/api/student/status/1/page/1
+
+  
+## API responses
+### single item response
+e.g. http://localhost:3500/api/student/100
+![single item api response](https://github.com/kowusu01/simple_js_webapi/blob/main/docs/api_result_single_item.PNG?raw=true)
+
+---  
+  
+### sample response for a list
+e.g. http://localhost:3500/api/student/list/page/1
+![list api response](https://github.com/kowusu01/simple_js_webapi/blob/main/docs/api_result_list.PNG?raw=true)
+
+---   
+  
+### an example 404 response
+![404 api response](https://github.com/kowusu01/simple_js_webapi/blob/main/docs/api_404_response.PNG?raw=true)
+
+---  
+
+## Packages
+- npm : `sudo apt install npm` (ubuntu)
+- npm-run-all : ` npm install npm-run-all --save-dev `
+- nodemon: ` npm install nodemon --save-dev `
+- expressJs
+
+
