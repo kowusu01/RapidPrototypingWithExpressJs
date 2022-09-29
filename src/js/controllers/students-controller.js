@@ -36,9 +36,7 @@ routingEngine.get('/', function(request, response)
 
 // request to find a single student
 // e.g. api/student/100 where 100 is the ID
-routingEngine.get('/:id(\\d+)', function(req, resp)
-{
-	
+routingEngine.get('/:id(\\d+)', function(req, resp){	
 	// attempt to find the item from the service
 	let  item = {};
 	try{
@@ -57,29 +55,22 @@ routingEngine.get('/:id(\\d+)', function(req, resp)
 		try{
 			finalResponse = moduleCommon.addApiMetadataForSingleItem(item, STUDENTS_API_LOCATION);
 		}catch(ex){
-			resp.status(500).send(
-				{
+			resp.status(500).send({
 					status_code:500, 
 					message_code: "MSG_CODE_INTERNAL_SERVER_WRONGDOING", 
 					message: "ok, I admit, the code is doing its own thing, I will fix it."
 				}
-			);
-		}
-
+			);}
 		resp.send(finalResponse);
- 	}
- 	else
- 	{
+ 	}else{
  		console.log("student " + req.params.id + " not found.");
-		 resp.status(404).send(
-			{
+		 resp.status(404).send({
 				status_code:404, 
 				message_code: "MSG_CODE_ITEM_NOT_FOUND", 
 				message: "no item matched the id specified."
-			}
-		);
+			});
  	}	
-})
+});
 
 // request to list a all students
 // e.g. api/student/list

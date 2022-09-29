@@ -18,7 +18,7 @@ This creates a huge dependency issue that is often difficult  to work around and
 
 In remote work environments where there is often large time differences between clients and developers, teams may encounter issues and not get the right support at the right time.  For remote developers to remain productive they need to learn techniques to reduce development dependencies.  But how does one do that? 
 
-### attempt to remove dependencies are mush as possible
+### attempt to remove dependencies are much as possible
 The idea is to duplicate the development environment locally as much as possible. With technologies like docker, it is much easier to create such environments locally that it was a few years ago.
 
 For instance, the whole backend api can be dockerized and shared so that developers can run it locally. Another method would be to create a dummy api that serves data similar to what the real api will serve. This gives you, the developer a lot of flexilibity especially when creating test data.  
@@ -75,11 +75,12 @@ The application will serve hardcoded dummy data (json) via api. The following is
 
  ]
 ```
+![app structure](https://github.com/kowusu01/simple_js_webapi/blob/main/docs/service-with-fake-data.png?raw=true)
 
 ### 2. define the api endpoint
 #### api/student
   
-  
+
 ### 3. define the urls and paths with all required parameters
 Now define the urls that will be used to access the data. This urls should be the same as the ones the real api will use.
 Remember, you don't need the entire api schema to get started. Start by getting the api designer to provide a few of the important endpoints and their schema.  
@@ -98,9 +99,13 @@ In this example we will create an api that returns student data. Three methods w
 
 These three methods could provide the web team something to start with and establish the code for interacting with an api which is going to be needed when the final api is ready.
 
-### 4. write methods to return the dummy data 
-Once the paths are defined, create methods in the controller (expressJs route) to serve the requests.  
+### 4. write methods in the service to return the dummy data
+Next step is to create methods in the service to return data for each route. For instance we need a method that searches in the dummy data and return a record that matches a given id. Below is an example of such method.
+![sample service method](https://github.com/kowusu01/simple_js_webapi/blob/main/docs/service-with-fake-data-and-method.png?raw=true)
+ 
+Once you have service methods to return data, and the api routes (paths) are defined, create methods in the controller (expressJs route) to serve the requests.  
 Below is a sample methods that serves request #2 find student given an id,  _e.g. api/student/100_
+![sample route method](https://github.com/kowusu01/simple_js_webapi/blob/main/docs/sample-route-method.png?raw=true)
 
 ### 5. set up the http server and serve requests
 Node ExpressJs is used as the http server, with the api endpoints designed to mimic the actual api endpoints.  
