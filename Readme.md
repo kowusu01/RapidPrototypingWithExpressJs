@@ -181,7 +181,7 @@ e.g. http://localhost:3500/api/student/list/page/1
 
 ---  
 
-## usign Openpi to describe your api
+## using Openpi to describe your api
 As a bonus, I have described the api using OpenApi (a.k.a Swagger). With a few packages and a few lines of code in the app.js, the OpenApi schema is integrated into the project and you can view the description in the Swagger UI when you run the app.
 
 I did not go into details about the OpenApi schema and how to integrate it into the app, but you can read more about it and follow the code to see how it's done.
