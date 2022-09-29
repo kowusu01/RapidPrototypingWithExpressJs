@@ -75,7 +75,7 @@ The application will serve hardcoded dummy data (json) via api. The following is
 
  ]
 ```
-![app structure](https://github.com/kowusu01/simple_js_webapi/blob/main/docs/service-with-fake-data.png?raw=true)
+![app structure](https://github.com/kowusu01/RapidPrototypingWithExpressJs/blob/main/docs/service-with-fake-data.png?raw=true)
 
 ### 2. define the api endpoint
 #### api/student
@@ -100,15 +100,20 @@ In this example we will create an api that returns student data. Three methods w
 These three methods could provide the web team something to start with and establish the code for interacting with an api which is going to be needed when the final api is ready.
 
 ### 4. write methods in the service to return the dummy data
-Next step is to create methods in the service to return data for each route. For instance we need a method that searches in the dummy data and return a record that matches a given id. Below is an example of such method.
-![sample service method](https://github.com/kowusu01/simple_js_webapi/blob/main/docs/service-with-fake-data-and-method.png?raw=true)
- 
-Once you have service methods to return data, and the api routes (paths) are defined, create methods in the controller (expressJs route) to serve the requests.  
-Below is a sample methods that serves request #2 find student given an id,  _e.g. api/student/100_
-![sample route method](https://github.com/kowusu01/simple_js_webapi/blob/main/docs/sample-route-method.png?raw=true)
+Next step is to create methods in the service to return data for each route. For instance we need a method that searches in the dummy data and return a record that matches a given id. This exactly what we want to do when we get data from the actual api.   
 
-### 5. set up the http server and serve requests
+Below is an example of such method.
+![sample service method](https://github.com/kowusu01/RapidPrototypingWithExpressJs/blob/main/docs/service-with-fake-data-and-method.png?raw=true)
+ 
+### 5. write methods in the controller to serve the requests
+Once you have service methods to return data, and the api routes (paths) are defined, create methods in the controller (expressJs route) to serve the requests.  Each method in the controller calls a method in the service to return the required data, format it and return to the client.  
+
+Below is a sample method that serves request #2 - _find student given an id:  e.g. api/student/100_
+![sample route method](https://github.com/kowusu01/RapidPrototypingWithExpressJs/blob/main/docs/sample-route-method.png?raw=true)
+
+### 6. set up the http server and serve requests
 Node ExpressJs is used as the http server, with the api endpoints designed to mimic the actual api endpoints.  
+![sample route method](https://github.com/kowusu01/RapidPrototypingWithExpressJs/blob/main/docs/partial-appjs.png?raw=true)
 
 ## How the app is constructed
 
@@ -130,7 +135,7 @@ Node ExpressJs is used as the http server, with the api endpoints designed to mi
 	- when the app builds, it copies all files needed to run the app into the __app_modules__ folder 
 	
 
-![app structure](https://github.com/kowusu01/simple_js_webapi/blob/main/docs/SimpleJsApiStructure.jpg?raw=true)
+![app structure](https://github.com/kowusu01/RapidPrototypingWithExpressJs/blob/main/docs/SimpleJsApiStructure.jpg?raw=true)
 
   
 ## How to execute the app
@@ -161,18 +166,18 @@ note: all commands are executed in the bash terminal
 ## API responses
 ### single item response
 e.g. http://localhost:3500/api/student/100
-![single item api response](https://github.com/kowusu01/simple_js_webapi/blob/main/docs/api_result_single_item.PNG?raw=true)
+![single item api response](https://github.com/kowusu01/RapidPrototypingWithExpressJs/blob/main/docs/api-result-single-item.PNG?raw=true)
 
 ---  
   
 ### sample response for a list
 e.g. http://localhost:3500/api/student/list/page/1
-![list api response](https://github.com/kowusu01/simple_js_webapi/blob/main/docs/api_result_list.PNG?raw=true)
+![list api response](https://github.com/kowusu01/RapidPrototypingWithExpressJs/blob/main/docs/api-result-list.PNG?raw=true)
 
 ---   
   
 ### an example 404 response
-![404 api response](https://github.com/kowusu01/simple_js_webapi/blob/main/docs/api_404_response.PNG?raw=true)
+![404 api response](https://github.com/kowusu01/RapidPrototypingWithExpressJs/blob/main/docs/api-result-404.PNG?raw=true)
 
 ---  
 

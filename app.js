@@ -24,9 +24,6 @@ api_root = students_api_root
 
 app.use(api_root, routingEngine);
 
-// add open api docs
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
 const server = app.listen(port,
  	function(){
 			console.log('');			
