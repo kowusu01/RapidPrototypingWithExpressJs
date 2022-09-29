@@ -24,7 +24,7 @@ The idea is to duplicate the development environment locally as much as possible
 For instance, the whole backend api can be dockerized and shared so that developers can run it locally. Another method would be to create a dummy api that serves data similar to what the real api will serve. This gives you, the developer a lot of flexilibity especially when creating test data.  
 
 ### this project shows one way to remove a dependency 
-This project shows how Node can be used to create a simple dummy api for testing while the actual api is still in development. In oder to create a dummy api that resemebles the actual one, we need to define the api endpoints and the schema very quickly during the project. Tools like OpenApi can be very helpful in this case.  
+This project shows how Node can be used to create a simple dummy api for testing while the actual api is still in development. In order to create a dummy api that resemebles the actual one, we need to define the api endpoints and the schema very quickly during the project. Tools like OpenApi can be very helpful in this case.  
   
 Even if developers are not familiar with how to use OpenApi to describe api endpoints, you should be able to use json to create sample data of what is expected from th api.
 
@@ -180,6 +180,15 @@ e.g. http://localhost:3500/api/student/list/page/1
 ![404 api response](https://github.com/kowusu01/RapidPrototypingWithExpressJs/blob/main/docs/api-result-404.PNG?raw=true)
 
 ---  
+
+## usign Openpi to describe your api
+As a bonus, I have described the api using OpenApi (a.k.a Swagger). With a few packages and a few lines of code in the app.js, the OpenApi schema is integrated into the project and you can view the description in the Swagger UI when you run the app.
+
+I did not go into details about the OpenApi schema and how to integrate it into the app, but you can read more about it and follow the code to see how it's done.
+
+The OpenApi description is called a schema and it's usually defined using json or yaml. I used yaml in this case. The schema can be found in the __open_api_definitions folder__.
+
+
 
 ## Packages
 - npm
