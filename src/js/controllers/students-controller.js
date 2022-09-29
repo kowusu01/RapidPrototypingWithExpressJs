@@ -20,39 +20,69 @@ const STUDENTS_API_LOCATION =  "http://localhost:3500/api/student";
 
 
 // middleware to intercept all requests and print time
-// an example of how to uintercept request befor they are fulfilled
+// an example of how to intercept request before they are fulfilled
 routingEngine.use(function timeLog(request, response, nextRoute) {
 	console.log(new Date() + " - " + request.originalUrl);
 	nextRoute();
 })
 
-//response to requests to serve home page - route.get
-// e.g. api/contacts
+// response to requests to serve home page
+// e.g. api/student
 routingEngine.get('/', function(request, response)
 {
 	response.send( {"message": "Welcome to my simple Node WebApi Service"} );
 })
 
 
-// request to serve a single student
-//e.g. api/student/100 where 100 is the ID
+// request to find a single student
+// e.g. api/student/100 where 100 is the ID
 routingEngine.get('/:id(\\d+)', function(req, resp)
 {
-	let  item  = studentsService.getItemById(req.params.id);
+	
+	// attempt to find the item from the service
+	let  item = {};
+	try{
+		item  = studentsService.getItemById(req.params.id);
+	}catch(ex){
+		resp.status(500).send({
+				status_code:500, 
+				message_code: "MSG_CODE_INTERNAL_SERVER_ERROR", 
+				message: "something went wrong, but don't worry, we've informed the tech guys to look into it."
+			});
+	}
 
+	// if item is found, add metadata and create final response to send to client
    if (item != null){
- 		console.log(item);
-		resp.send(moduleCommon.addApiMetadataForSingleItem(item, STUDENTS_API_LOCATION));
+		let finalResponse = {};
+		try{
+			finalResponse = moduleCommon.addApiMetadataForSingleItem(item, STUDENTS_API_LOCATION);
+		}catch(ex){
+			resp.status(500).send(
+				{
+					status_code:500, 
+					message_code: "MSG_CODE_INTERNAL_SERVER_WRONGDOING", 
+					message: "ok, I admit, the code is doing its own thing, I will fix it."
+				}
+			);
+		}
+
+		resp.send(finalResponse);
  	}
  	else
  	{
  		console.log("student " + req.params.id + " not found.");
-		resp.status(404).send({status:404, message: "student " + req.params.id + " not found." });
+		 resp.status(404).send(
+			{
+				status_code:404, 
+				message_code: "MSG_CODE_ITEM_NOT_FOUND", 
+				message: "no item matched the id specified."
+			}
+		);
  	}	
 })
 
 // request to list a all students
-//e.g. api/student/list
+// e.g. api/student/list
 routingEngine.get('/list', function(req, resp)
 {
 	// perform url validation before redirecting
@@ -63,15 +93,31 @@ routingEngine.get('/list', function(req, resp)
 
 
 // request to list a all students
-//e.g. api/student/list
+// e.g. api/student/list
 routingEngine.get('/list/page/:page(\\d+)', function(req, resp)
 {
 	let students = studentsService.getAllItems();
+
 	if (students==null || students.length==0)
 	{
-		resp.status(404).send({status:404, message: "no items found"});
+		resp.status(404).send(
+			{
+				status_code:404, 
+				message_code: "MSG_CODE_NO_ITEMS_FOUND", 
+				message: "no items were found."
+			}
+		);
 	}
-	resp.send(moduleCommon.addApiMetadataForList(students, STUDENTS_API_LOCATION, req, moduleCommon.DEFAULT_LIST_PAGINATION, "list of students (paginated)"));
+
+	// add metadata to the student object and create a final response to send the client
+	let finalResponse = moduleCommon.addApiMetadataForList(
+		apiResult=students, 
+		apiLocation=STUDENTS_API_LOCATION, 
+		requestObj=req, 
+		nextRequestUrl=moduleCommon.DEFAULT_LIST_PAGINATION,  
+		request_description="list of students (paginated)");
+
+	resp.send( finalResponse);
 })
 
 

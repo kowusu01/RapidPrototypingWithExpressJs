@@ -2,7 +2,9 @@
 
 module.exports = {
 
+	// change this as needed
 	MAX_RESPONSE_PAGE_SIZE : 2,
+
 	DEFAULT_LIST_PAGINATION : "http://localhost:3500/api/student/list/page/",
 	STUDENT_STATUS_LIST_PAGINATION : "http://localhost:3500/api/student/status/",
 	
@@ -13,14 +15,14 @@ module.exports = {
 	MESSAGE_INVALID_PAGINDATION : "The requested resource requires pagination. Either no page was specified in the request or page was invalid, defaulting to page 1",
 
 	
-	addApiMetadataForList : function (apiResultArray, apiLocation, req, nextRequestUrl="", requestDescr="") {
+	addApiMetadataForList : function (apiResultArray, apiLocation, requestObj, nextRequestUrl="", requestDescr="") {
 		
 		let messageCode = this.MSG_CODE_OK;
 		let message = this.MESSAGE_OK;
 		
 		// page size: e.g. we only want to return max 20 items at a time if we have too many records
 		// add logic to get correct page
-		let page = (req==null||req.params.page==undefined)? 0 : parseInt(req.params.page); 
+		let page = (requestObj==null||requestObj.params.page==undefined)? 0 : parseInt(requestObj.params.page); 
 		let totalPages = Math.ceil(apiResultArray.length / this.MAX_RESPONSE_PAGE_SIZE);
 		if (page < 1 || page > totalPages)	{
 			page  = 1;
@@ -39,9 +41,9 @@ module.exports = {
 		if (morePages){
 			let nextPage  = parseInt(page) + 1;
 			
-			if(req.originalUrl.includes("/status"))	{
+			if(requestObj.originalUrl.includes("/status"))	{
 				// next urls
-				relevantRequests[0] = nextRequestUrl + req.params.status + "/page/" + nextPage;						
+				relevantRequests[0] = nextRequestUrl + requestObj.params.status + "/page/" + nextPage;						
 			}
 			else{
 				relevantRequests[0] = nextRequestUrl + nextPage;
@@ -49,8 +51,8 @@ module.exports = {
 		}
 
 		// add alternatives requests
-		if(req.originalUrl.includes("/status"))	{
-			let additionalRequests = this.getAlternativeRequests(req, this.STUDENT_STATUS_LIST_PAGINATION);
+		if(requestObj.originalUrl.includes("/status"))	{
+			let additionalRequests = this.getAlternativeRequests(requestObj, this.STUDENT_STATUS_LIST_PAGINATION);
 			if(additionalRequests!=null && additionalRequests.length>0){
 				relevantRequests = relevantRequests.concat(additionalRequests);
 			}
@@ -68,7 +70,8 @@ module.exports = {
 	totalPages = totalPages < 1? 1 : totalPages;
 	let list = {};
 	list.meta = {
-		messageCode: messageCode
+		status_code: 200
+		,message_code: messageCode
 		,message: message
 		,request_description: requestDescr
 		,resource_location: apiLocation
@@ -82,31 +85,40 @@ module.exports = {
 	return list;
 },
 
-addApiMetadataForSingleItem : function (apiResultItem, apiLocation, req=null, nextRequestUrl="", requestDescr=""){
+addApiMetadataForSingleItem : function (apiResultItem, apiLocation, requestObj=null, nextRequestUrl="", requestDescr=""){
 
 	let item = {};
-	item.meta = {
-		 messageCode: this.MSG_CODE_OK
-		,message: this.MESSAGE_OK
-		,request_description: "return a single item matching the request"
-		,resource_location: apiLocation
-		,result_type: "single_item"
-		/* ,relevant_requests: relevantRequests */ // for future
-	};
+	try{
+		item.meta = {
+			status_code: 200
+			,message_code: this.MSG_CODE_OK
+			,message: this.MESSAGE_OK
+			,request_description: "return a single item matching the request"
+			,resource_location: apiLocation
+			,result_type: "single_item"
+			/* ,relevant_requests: relevantRequests */ // for future
+		};
 
-	item.student = apiResultItem;
+		item.student = apiResultItem;
+		
+	}
+	catch(ex){
+		// log ex
+		console.log(ex)
+		throw ex;
+	}
 	return item;
 },
 
-getAlternativeRequests : function ( req, alternativeRequestUrl) {
+getAlternativeRequests : function ( requestObj, alternativeRequestUrl) {
 		
 	let additionalRequests = [];
 
 	// /api/student/status/1/page/1
-	if(req.originalUrl.includes("/status"))
+	if(requestObj.originalUrl.includes("/status"))
 	{
 		// suggest alternative url
-		if(req.params.status==1){
+		if(requestObj.params.status==1){
 			additionalRequests[0] = alternativeRequestUrl + 0 + "/page/1";
 		}
 		else {

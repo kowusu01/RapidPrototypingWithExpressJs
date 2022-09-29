@@ -1,0 +1,199 @@
+openapi: "3.0.2"
+info:
+  title: Sample API to return fake student data
+  description: |- 
+      For demonstration purpose, the data is hardcoded in the service.
+
+  
+  version: "1.0"
+servers:
+  - url: http://localhost:3500/api
+tags:
+    - name: Student
+      description: the student endpoint
+
+# route definitions
+paths:
+
+   /student/{id}:    
+    get:
+      description: get a student with the given id 
+      tags:
+        - "Student"
+      parameters:
+      - name: id
+        in: path
+        schema:
+          type: number
+        required: true
+      responses:
+        '200':  
+          description: OK
+          content:
+            application/json:
+              schema: 
+               $ref: '#/components/schemas/singleStudentResponseSchema'
+        '404': 
+           description: response format for 404 (not found)
+           content:
+              application/json:
+                schema: 
+                  $ref: '#/components/schemas/errorResponseSchema'  
+        '500': 
+           description: response format for 500 (errors)
+           content:
+              application/json:
+                schema: 
+                  $ref: '#/components/schemas/errorResponseSchema'
+
+   /student/list/page/{page}:
+    get:
+      description: 'get a list of students, if there are many students, do not return all, return page at a time. example: /student/page/1'
+      tags:
+        - "Student"
+      parameters:
+      - name: page
+        in: path
+        schema:
+            type: number
+        required: true
+        example: 1
+      responses:
+        "200":
+          description: OK         
+          content:
+            application/json:
+              schema: 
+               $ref: '#/components/schemas/studentListResponseSchema'  
+        '404': 
+           description: response format for 404 (not found)
+           content:
+              application/json:
+                schema: 
+                  $ref: '#/components/schemas/errorResponseSchema'  
+        '500': 
+           description: response format for 500 (errors)
+           content:
+              application/json:
+                schema: 
+                  $ref: '#/components/schemas/errorResponseSchema'
+   
+   /student/status/{status}/page/{page}:
+    get:
+      description: 'get a list of students with a given status, if there are many students, do not return all, return page at a time. example: /student/status/1/page/1'
+      tags:
+        - "Student" 
+      parameters:
+        - name: status
+          in: path
+          schema:
+            type: number
+          required: true
+        - name: page
+          in: path
+          schema:
+            type: number
+          required: true
+      responses:
+          '200': 
+            description: OK
+            content:
+              application/json:
+                schema: 
+                  $ref: '#/components/schemas/studentListResponseSchema'  
+          '404': 
+            description: response for 404 (item not found)
+            content:
+              application/json:
+                schema: 
+                  $ref: '#/components/schemas/errorResponseSchema'  
+          '500': 
+            description:  response for 500 (errors)
+            content:
+              application/json:
+                schema: 
+                  $ref: '#/components/schemas/errorResponseSchema' 
+
+# components
+components:
+
+  # schemas
+  schemas:
+
+  # error message schema
+    errorResponseSchema:
+      description: common schema for error responses, 404, 500, etc
+      type: object
+      properties:
+        status_code:
+          type: integer
+        message_code:
+          type: string
+        message:
+          type: string
+
+  # schema for returning single object
+    singleStudentResponseSchema:
+      description: 'standard schema for returning a single object, e.g. single student.  note: all responses include some metadata'
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/responseMetadata'
+        student:
+          $ref: '#/components/schemas/studentSchema'
+  
+  # schema for returning list of objects
+    studentListResponseSchema:
+      description: 'schema for returning a list of objects, e.g. list of students.  note: all responses include some metadata'
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/responseMetadata'
+        students:
+          type: array
+          items:
+            $ref: '#/components/schemas/studentSchema'
+  
+    # student schema
+    studentSchema:
+      description: student object
+      type: object
+      properties:
+         ID:
+          type: integer
+         FirstName:
+          type: string
+         LastName:
+          type: string
+         IsActive:
+          type: integer
+          enum:
+            - [0, 1]
+          example: 0 inactive, 1 active
+    
+    # schema for describing metadata added to response objects
+    responseMetadata:
+      description: schema for describing metadata added to response objects
+      type: object
+      properties:
+        status_code:
+          type: integer
+        message_code:
+          type: string
+        message:
+          type: string
+        request_description:
+          type: string
+        resource_location:
+          type: string
+        result_type:
+          type: string
+        page:
+          type: string
+        page_size:
+          type: integer
+        relevant_requests:
+          description: list of relevant urls with respect to current request
+          type: array
+          items:
+            type: string  
