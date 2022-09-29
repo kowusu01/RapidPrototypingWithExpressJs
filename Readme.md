@@ -77,8 +77,9 @@ The application will serve hardcoded dummy data (json) via api. The following is
 ```
 
 ### 2. define the api endpoint
-api/student
-
+#### api/student
+  
+  
 ### 3. define the urls and paths with all required parameters
 Now define the urls that will be used to access the data. This urls should be the same as the ones the real api will use.
 Remember, you don't need the entire api schema to get started. Start by getting the api designer to provide a few of the important endpoints and their schema.  
@@ -90,9 +91,9 @@ In this example we will create an api that returns student data. Three methods w
  
 | req#    |    url      | description |
 | ----------- | ----------- | ----------- |
-| 1. api/student/list/      | list students with pagination, e.g. _api/student/list/page/1_  |
-| 2. api/student/id  | find a student given an id,  e.g. _api/student/100_  |
-| 3. api/student/status_id    | list all students with a given status (1 is active, 0 is inactive), e.g. _api/student/status/1_ |
+| 1.  |  api/student/list/      | list students with pagination, e.g. _api/student/list/page/1_  |
+| 2.  |  api/student/id  | find a student given an id,  e.g. _api/student/100_  |
+| 3.  |  api/student/status_id    | list all students with a given status (1 is active, 0 is inactive), e.g. _api/student/status/1_ |
 |  |  |  
 
 These three methods could provide the web team something to start with and establish the code for interacting with an api which is going to be needed when the final api is ready.
