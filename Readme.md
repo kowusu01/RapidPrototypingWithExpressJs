@@ -75,7 +75,7 @@ The application will serve hardcoded dummy data (json) via api. The following is
 
  ]
 ```
-![app structure](https://github.com/kowusu01/RapidPrototypingWithExpressJs/blob/main/docs/service-with-fake-data.png?raw=true)
+![app structure](https://github.com/kowusu01/RapidPrototypingWithExpressJs/blob/main/docs/service-with-fake-data.PNG?raw=true)
 
 ### 2. define the api endpoint
 #### api/student
@@ -103,17 +103,17 @@ These three methods could provide the web team something to start with and estab
 Next step is to create methods in the service to return data for each route. For instance we need a method that searches in the dummy data and return a record that matches a given id. This exactly what we want to do when we get data from the actual api.   
 
 Below is an example of such method.
-![sample service method](https://github.com/kowusu01/RapidPrototypingWithExpressJs/blob/main/docs/service-with-fake-data-and-method.png?raw=true)
+![sample service method](https://github.com/kowusu01/RapidPrototypingWithExpressJs/blob/main/docs/service-with-fake-data-and-method.PNG?raw=true)
  
 ### 5. write methods in the controller to serve the requests
 Once you have service methods to return data, and the api routes (paths) are defined, create methods in the controller (expressJs route) to serve the requests.  Each method in the controller calls a method in the service to return the required data, format it and return to the client.  
 
 Below is a sample method that serves request #2 - _find student given an id:  e.g. api/student/100_
-![sample route method](https://github.com/kowusu01/RapidPrototypingWithExpressJs/blob/main/docs/sample-route-method.png?raw=true)
+![sample route method](https://github.com/kowusu01/RapidPrototypingWithExpressJs/blob/main/docs/sample-route-method.PNG?raw=true)
 
 ### 6. set up the http server and serve requests
 Node ExpressJs is used as the http server, with the api endpoints designed to mimic the actual api endpoints.  
-![sample route method](https://github.com/kowusu01/RapidPrototypingWithExpressJs/blob/main/docs/partial-appjs.png?raw=true)
+![sample route method](https://github.com/kowusu01/RapidPrototypingWithExpressJs/blob/main/docs/partial-appjs.PNG?raw=true)
 
 ## How the app is constructed
 
