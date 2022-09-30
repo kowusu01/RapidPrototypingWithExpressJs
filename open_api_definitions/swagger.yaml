@@ -153,7 +153,7 @@ components:
         message:
           description: a message describing the error
           type: string
-          example: item not found
+          example: some unknown error occurred
 
 
   # schema for returning single object
@@ -184,7 +184,7 @@ components:
       type: object
       properties:
          ID:
-          $ref: '#/components/schemas/personID'
+          $ref: '#/components/schemas/integerIdentifier'
          FirstName:
           $ref: '#/components/schemas/personFirstName'
          LastName:
@@ -194,11 +194,9 @@ components:
            type: string
            example: 2022-01-31
          IsActive:
-          $ref: '#/components/schemas/personStatus'
-          
+          $ref: '#/components/schemas/personStatus'          
     
-    # schema for describing metadata added to response objects
-
+    # schema for metadata added to single item response
     singleItemResponseMetadata:
       description: schema for describing metadata added to response objects
       type: object
@@ -228,6 +226,7 @@ components:
             - [single_item, list]
           example: single_item
 
+    # schema for  metadata added to list of objects response
     listResponseMetadata:
       description: schema for describing metadata added to response objects
       type: object
@@ -273,7 +272,7 @@ components:
           example: [http://localhost:3500/api/student/list/page/2]  
   
   # common properties
-    personID:
+    integerIdentifier:
       description: integer unique id for a person
       type: integer
       example: 101
