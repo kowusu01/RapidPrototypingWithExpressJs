@@ -38,7 +38,7 @@ paths:
            content:
               application/json:
                 schema: 
-                  $ref: '#/components/schemas/errorResponseSchema'  
+                  $ref: '#/components/schemas/notFoundResponseSchema'  
         '500': 
            description: response format for 500 (errors)
            content:
@@ -70,7 +70,7 @@ paths:
            content:
               application/json:
                 schema: 
-                  $ref: '#/components/schemas/errorResponseSchema'  
+                  $ref: '#/components/schemas/notFoundResponseSchema'  
         '500': 
            description: response format for 500 (errors)
            content:
@@ -106,7 +106,7 @@ paths:
             content:
               application/json:
                 schema: 
-                  $ref: '#/components/schemas/errorResponseSchema'  
+                  $ref: '#/components/schemas/notFoundResponseSchema'  
           '500': 
             description:  response for 500 (errors)
             content:
@@ -121,16 +121,40 @@ components:
   schemas:
 
   # error message schema
-    errorResponseSchema:
-      description: common schema for error responses, 404, 500, etc
+    notFoundResponseSchema:
+      description: common schema for error responses, 404
       type: object
       properties:
         status_code:
-          type: integer
+           description: describes not found 401 http status code
+           type: integer
+           example: 404
         message_code:
-          type: string
+           description: describes an application internal code
+           type: string
+           example: MSG_CODE_ITEM_NOT_FOUND
         message:
+          description: a simple 404 message
           type: string
+          example: item not found
+    
+    errorResponseSchema:
+      description: common schema for error responses 500
+      type: object
+      properties:
+        status_code:
+          description: describes error 500 http status code
+          type: integer
+          example: 500
+        message_code:
+           description: describes an application internal code
+           type: string
+           example: MSG_CODE_INTERNAL_ERROR
+        message:
+          description: a message describing the error
+          type: string
+          example: item not found
+
 
   # schema for returning single object
     singleStudentResponseSchema:
@@ -138,7 +162,7 @@ components:
       type: object
       properties:
         meta:
-          $ref: '#/components/schemas/responseMetadata'
+          $ref: '#/components/schemas/singleItemResponseMetadata'
         student:
           $ref: '#/components/schemas/studentSchema'
   
@@ -148,7 +172,7 @@ components:
       type: object
       properties:
         meta:
-          $ref: '#/components/schemas/responseMetadata'
+          $ref: '#/components/schemas/listResponseMetadata'
         students:
           type: array
           items:
@@ -156,44 +180,117 @@ components:
   
     # student schema
     studentSchema:
-      description: student object
+      description: schema for student object
       type: object
       properties:
          ID:
-          type: integer
+          $ref: '#/components/schemas/personID'
          FirstName:
-          type: string
+          $ref: '#/components/schemas/personFirstName'
          LastName:
-          type: string
+          $ref: '#/components/schemas/personLastName'
+         DateAdded: 
+           description: date student was added to system
+           type: string
+           example: 2022-01-31
          IsActive:
-          type: integer
-          enum:
-            - [0, 1]
-          example: 0 inactive, 1 active
+          $ref: '#/components/schemas/personStatus'
+          
     
     # schema for describing metadata added to response objects
-    responseMetadata:
+
+    singleItemResponseMetadata:
       description: schema for describing metadata added to response objects
       type: object
       properties:
         status_code:
+          description: describes http status code
           type: integer
+          example: 200
         message_code:
+          description: describes an application internal code
           type: string
+          example: MSG_CODE_OK
         message:
+          description: an informational message or error message
           type: string
+          example: 1 item were found
         request_description:
+          description: short description of the request
           type: string
+          example: find a student
         resource_location:
+          description: http location or relative api location where the requested resource can be found. this can be useful in microservices
           type: string
+          example: /api/student
         result_type:
-          type: string
-        page:
-          type: string
-        page_size:
+          enum:
+            - [single_item, list]
+          example: single_item
+
+    listResponseMetadata:
+      description: schema for describing metadata added to response objects
+      type: object
+      properties:
+        status_code:
+          description: describes http status code
           type: integer
+          example: 200
+        message_code:
+          description: describes an application internal code
+          type: string
+          example: MSG_CODE_OK
+        message:
+          description: an informational message or error message
+          type: string
+          example: 1000 items were found, items will be fetched in pages 
+        request_description:
+          description: short description of the request
+          type: string
+          example: return list of students with status 1 (active)
+        resource_location:
+          description: http location or relative api location where the requested resource can be found. this can be useful in microservices
+          type: string
+          example: /api/student
+        result_type:
+          enum:
+            - [single_item, list]
+          example: list
+        page:
+          description: current page in the pagination if a list
+          type: string
+          example: 1 of 10
+        page_size:
+           description: number of records to return at a time when dealing with large lists
+           type: integer
+           example: 1
+           default: 1
         relevant_requests:
           description: list of relevant urls with respect to current request
           type: array
           items:
-            type: string  
+            type: string
+          example: [http://localhost:3500/api/student/list/page/2]  
+  
+  # common properties
+    personID:
+      description: integer unique id for a person
+      type: integer
+      example: 101
+    
+    personFirstName:
+      description: first name of person, e.g. John
+      type: string
+      example: John
+    
+    personLastName:
+      description: last name of person, e.g. Smith
+      type: string
+      example: Smith
+      
+    personStatus:
+      description: status of a person in the system, active=1, inactive=0
+      enum:
+        - [0, 1]
+      example: 1
+      default: 1    
