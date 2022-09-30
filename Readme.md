@@ -29,7 +29,7 @@ This project shows how Node can be used to create a simple dummy api for testing
 Even if developers are not familiar with how to use OpenApi to describe api endpoints, you should be able to use json to create sample data of what is expected from th api.
 
 
-## scenario
+## scenario - an api serving students data
 Let's assume we are developing backend api to serve students data. We have a large number of students in a database and you are building an api to serve that data.
 Each student record has the following attributes:
 
