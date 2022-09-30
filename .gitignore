@@ -46,7 +46,7 @@ jspm_packages/
 app_modules/common/*
 app_modules/controllers/*
 app_modules/services/*
-
+app_modules/open_api_definitions/*
 
 !app_modules/common/.gitkeep
 !app_modules/controllers/.gitkeep
