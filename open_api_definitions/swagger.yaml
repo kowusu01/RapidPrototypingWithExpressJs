@@ -1,13 +1,14 @@
 openapi: "3.0.2"
+
 info:
   title: Sample API to return fake student data
   description: |- 
       For demonstration purpose, the data is hardcoded in the service.
-
-  
   version: "1.0"
+
 servers:
   - url: http://localhost:3500/api
+
 tags:
     - name: Student
       description: the student endpoint
@@ -120,7 +121,7 @@ components:
   # schemas
   schemas:
 
-  # error message schema
+    # not found message schema
     notFoundResponseSchema:
       description: common schema for error responses, 404
       type: object
@@ -138,6 +139,7 @@ components:
           type: string
           example: item not found
     
+    # error message schema
     errorResponseSchema:
       description: common schema for error responses 500
       type: object
@@ -155,8 +157,7 @@ components:
           type: string
           example: some unknown error occurred
 
-
-  # schema for returning single object
+    # schema for returning single object
     singleStudentResponseSchema:
       description: 'standard schema for returning a single object, e.g. single student.  note: all responses include some metadata'
       type: object
@@ -177,7 +178,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/studentSchema'
-  
+    
     # student schema
     studentSchema:
       description: schema for student object
@@ -222,8 +223,8 @@ components:
           type: string
           example: /api/student
         result_type:
-          enum:
-            - [single_item, list]
+          type: string
+          enum: [single_item, list]
           example: single_item
 
     # schema for  metadata added to list of objects response
@@ -269,7 +270,7 @@ components:
           type: array
           items:
             type: string
-          example: [http://localhost:3500/api/student/list/page/2]  
+          example: ['http://localhost:3500/api/student/list/page/2']  
   
   # common properties
     integerIdentifier:
@@ -278,18 +279,18 @@ components:
       example: 101
     
     personFirstName:
-      description: first name of person, e.g. John
+      description: first name of a person
       type: string
       example: John
     
     personLastName:
-      description: last name of person, e.g. Smith
+      description: last name of a person
       type: string
       example: Smith
       
     personStatus:
-      description: status of a person in the system, active=1, inactive=0
-      enum:
-        - [0, 1]
+      description: status of a person in the system, 1=active, 0=inactive
+      type: integer
+      enum: [0, 1]
       example: 1
-      default: 1    
+      default: 1
