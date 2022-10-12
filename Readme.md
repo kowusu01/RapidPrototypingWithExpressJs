@@ -115,6 +115,11 @@ Below is a sample method that serves request #2 - _find student given an id:  e.
 Node ExpressJs is used as the http server, with the api endpoints designed to mimic the actual api endpoints.  
 ![sample route method](https://github.com/kowusu01/RapidPrototypingWithExpressJs/blob/main/docs/partial-appjs.PNG?raw=true)
 
+
+### consuming the api
+Once the api is setup, it can be integrated into the frontend and consumed just like any api. 
+
+
 ## How the app is constructed
 
 1. the application is made up of four components:
@@ -131,7 +136,7 @@ Node ExpressJs is used as the http server, with the api endpoints designed to mi
       - starts http server on a selected port
   
 3. source and output folders:  
-	- all sourfce files are in nthe __src__ folder  
+	- all source files are in the __src__ folder  
 	- when the app builds, it copies all files needed to run the app into the __app_modules__ folder 
 	
 
@@ -183,6 +188,12 @@ e.g. http://localhost:3500/api/student/list/page/1
 ![404 api response](https://github.com/kowusu01/RapidPrototypingWithExpressJs/blob/main/docs/api-result-404.PNG?raw=true)
 
 ---  
+
+## conclusion
+This demonstrated how Node, Javascript, ExpressJS can be used for rapid prototyping. It showed how an api can be created on the frontend side to eliminate a dependency and allow development to proceed without delay.  
+  
+
+The main advantage for this approach is that since this was done in Javascript, it's more likely to fall into the same technology stack the frontend team is using and blend nicely into their work. The frontend team can modify or create more dummy data, add more more api methods, and test the frontend as needed without having to wait for the backend team to complete the final api. This can speed up work and improve productivity.
 
 
 ## Packages
