@@ -7,10 +7,6 @@ const express = require('express');
 // instantiate the express module
 const app = express();
 
-const swaggerUi = require('swagger-ui-express');
-const yamlModule = require('yamljs')
-const swaggerDocument = yamlModule.load('./app_modules/open_api_definitions/swagger.yaml');
-
 // load our routes for the webapi and set up routes based on this path
 // Note: in terms of mvc pattern, expressjs routing modules are the controllers
 const routingEngine = require('./app_modules/controllers/students-controller')
@@ -24,8 +20,6 @@ api_root = students_api_root
 
 app.use(api_root, routingEngine);
 
-// add open api docs
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const server = app.listen(port,
  	function(){

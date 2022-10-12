@@ -152,7 +152,8 @@ note: all commands are executed in the bash terminal
 - check the code to see where you can customize it
   
 
-## Sample responses
+## Sample resquests
+    
 ### list students
 - http://localhost:3500/api/student/list
 - curl http://localhost:3500/api/student/list/page/1
@@ -163,7 +164,9 @@ note: all commands are executed in the bash terminal
 - curl http://localhost:3500/api/student/status/1/page/1
 
   
-## API responses
+## Sample responses
+In order to make the api features easy to discover and consume, all successful responses will include a meta data section that provides some information about the result. This meta data section helps consumers understand the response and to better act on it.
+
 ### single item response
 e.g. http://localhost:3500/api/student/100
 ![single item api response](https://github.com/kowusu01/RapidPrototypingWithExpressJs/blob/main/docs/api-result-single-item.PNG?raw=true)
@@ -181,19 +184,9 @@ e.g. http://localhost:3500/api/student/list/page/1
 
 ---  
 
-## using Openpi to describe your api
-As a bonus, I have described the api using OpenApi (a.k.a Swagger). With a few packages and a few lines of code in the app.js, the OpenApi schema is integrated into the project and you can view the description in the Swagger UI when you run the app.
-
-I did not go into details about the OpenApi schema and how to integrate it into the app, but you can read more about it and follow the code to see how it's done.
-
-The OpenApi description is called a schema and it's usually defined using json or yaml. I used yaml in this case. The schema can be found in the __open_api_definitions folder__.
-
-
 
 ## Packages
 - npm
 - npm-run-all
 - expressJs
-- swagger-ui-express
-- yamljs
 - nodemon 

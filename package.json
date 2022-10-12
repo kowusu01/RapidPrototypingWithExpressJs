@@ -5,12 +5,11 @@
   "main": "app.js",
   "scripts": {
     "start": "npm-run-all clean build copy-compiled-files copy-other-js-files execute-app",
-    "build-all": "npm-run-all clean build copy-compiled-files copy-other-js-files copy-open-api-docs",
+    "build-all": "npm-run-all clean build copy-compiled-files copy-other-js-files",
     "clean": "rm -rf build .cache",
     "build": "tsc ",
     "copy-compiled-files": "cp -r build/* app_modules/services",
     "copy-other-js-files": "cp -r src/js/* app_modules",
-    "copy-open-api-docs": "cp -r open_api_definitions/* app_modules/open_api_definitions",
     "execute-app": "nodemon app.js"
   },
   "author": "Kwaku Owusu-Tieku",
@@ -18,13 +17,11 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
-    "nodemon": "^2.0.19",
-    "swagger-ui-express": "^4.5.0"
+    "nodemon": "^2.0.19"
   },
   "devDependencies": {
     "npm-run-all": "^4.1.5",
     "ts-node": "^7.0.1",
-    "typescript": "~3.2.2",
-    "yamljs": "^0.3.0"
+    "typescript": "~3.2.2"
   }
 }
