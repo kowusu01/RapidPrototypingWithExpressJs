@@ -7,19 +7,19 @@ I am not expert in modern javascript, as you will later discover from my javascr
 ## motivation
 ### applications have dependencies
 Many applications are made up of layers or components, the front end, the backend, the database, etc.
-some of the most difficult issues in application development is integrating with all the layers.  
+Some of the most difficult issues in application development is integrating with layers and dependencies.  
 
 For instance, consider a simple application made up of a web tier consuming data from an backend api. Initially the web tier cannot make much progress because the api is not available.  
   
-In some cases the api may be ready but it may be on a remote server and requires connectivity and access tokens. It often turn out that the api is also administered by a different group, and therefore as a consumer you may not be able to create your own test data to use.  
+In some cases the api may be ready but it may be on a remote server and requires connectivity and access tokens. It often turn out that the api is also administered by a different group, and therefore as a consumer, you may not be able to create your own test data to use.  
   
 ### working around dependencies is hard, results in wasted project time
 This creates a huge dependency issue that is often difficult  to work around and most developers simply wait till they have something to work with. This results in many wasted hours of development time and pushes all the work to the final weeks of the project.  
 
-In remote work environments where there is often large time differences between clients and developers, teams may encounter issues and not get the right support at the right time.  For remote developers to remain productive they need to learn techniques to reduce development dependencies.  But how does one do that? 
+In remote work environments where there is often large time differences between clients and developers, teams may encounter issues and not get the right support at the right time.  For remote developers to remain productive, they need to learn techniques to reduce development dependencies.  But how does one do that? 
 
 ### attempt to remove dependencies are much as possible
-The idea is to duplicate the development environment locally as much as possible. With technologies like docker, it is much easier to create such environments locally that it was a few years ago.
+One idea is to duplicate the development environment locally as much as possible. With technologies like docker, it is much easier to create such environments locally that it was a few years ago.
 
 For instance, the whole backend api can be dockerized and shared so that developers can run it locally. Another method would be to create a dummy api that serves data similar to what the real api will serve. This gives you, the developer a lot of flexilibity especially when creating test data.  
 
@@ -42,7 +42,7 @@ Each student record has the following attributes:
 
 ## actions we expect the api to allow
 For simplicity, we would like the final api to provide three methods. These are listed below:
-| property      | description |
+| api function     | description |
 | ----------- | ----------- |
 | list students | list students, if there are many of students, do not return all at once, we want the api to return a few at a time (paginated list) |
 | list students by status| list all students with a given status. e.g. list all active students. Again, we do not return all data at once, we want the api to return a few at a time (paginated list)  |
@@ -59,7 +59,7 @@ The application will serve hardcoded dummy data (json) via api. The following is
 ```json
  [
 	{
-		"ID": 100, "UniqueID": 
+		"ID": 100, 
 		"FirstName": "John",  
 		"LastName": "Bayor",  
 		"DateAdded":"2022-09-10", 
@@ -79,25 +79,25 @@ The application will serve hardcoded dummy data (json) via api. The following is
 
 ### 2. define the api endpoint
 #### api/student
-  
+The base url at this point does not matter since this can easily be configured. For instance the base url can be https://mydomain.com. However, the endpoint including versions number like _api/v1/student_ or _api/student_ that we use here should match what the final api would look like. In this case we use _api/student_ as the endpoint; all api urls will be based on this.
 
 ### 3. define the urls and paths with all required parameters
-Now define the urls that will be used to access the data. This urls should be the same as the ones the real api will use.
-Remember, you don't need the entire api schema to get started. Start by getting the api designer to provide a few of the important endpoints and their schema.  
+Now define the urls that will be used by clients to access api. These urls should be the same as the ones the real api will use.
+Remember, you don't need the entire api schema to get started. Start by getting the api designer to provide a few of the important endpoints and their descriptions either in a formal api schema or just text descriptions.  Whatever the descriptions you end up with, you should provide you with an idea of the api _methods_, _urls_, and _response_ returned with each url.
 
 In this example we will create an api that returns student data. Three methods will be implemented:  
  - list all students (with pagination)
  - find student using an id
  - list students with a given status (with pagination)
  
-| req#    |    url      | description |
-| ----------- | ----------- | ----------- |
-| 1.  |  api/student/list/      | list students with pagination, e.g. _api/student/list/page/1_  |
-| 2.  |  api/student/id  | find a student given an id,  e.g. _api/student/100_  |
-| 3.  |  api/student/status_id    | list all students with a given status (1 is active, 0 is inactive), e.g. _api/student/status/1_ |
+| req#    |    url      | request type | description | example |
+| ----------- | ----------- | ----------- |----------- |----------- |
+| 1.  |  api/student/list/  | GET | returns a list student object with pagination| api/student/list/page/1  |
+| 2.  |  api/student/{id}  | GET | returns a student with a given id | api/student/100  |
+| 3.  |  api/student/status/{status_id} | GET | returns all students with a given status (1 is active, 0 is inactive)  | api/student/status/1 |
 |  |  |  
 
-These three methods could provide the web team something to start with and establish the code for interacting with an api which is going to be needed when the final api is ready.
+These three methods could provide the web team something to start with and establish the code for interacting with an api which is going to be needed once the final api is ready.
 
 ### 4. write methods in the service to return the dummy data
 Next step is to create methods in the service to return data for each route. For instance we need a method that searches in the dummy data and return a record that matches a given id. This exactly what we want to do when we get data from the actual api.   
