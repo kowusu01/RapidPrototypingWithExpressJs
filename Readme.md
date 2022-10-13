@@ -21,12 +21,12 @@ In remote work environments where there is often large time differences between 
 ### attempt to remove dependencies are much as possible
 One idea is to duplicate the development environment locally as much as possible. With technologies like docker, it is much easier to create such environments locally that it was a few years ago.
 
-For instance, the whole backend api can be dockerized and shared so that developers can run it locally. Another method would be to create a dummy api that serves data similar to what the real api will serve. This gives you, the developer a lot of flexilibity especially when creating test data.  
+For instance, the whole backend api can be dockerized and shared so that developers can run it locally. Another method would be to create a dummy api that serves data similar to what the real api will serve. This gives you, the developer a lot of flexibility especially when creating test data.  
 
 ### this project shows one way to remove a dependency 
-This project shows how Node can be used to create a simple dummy api for testing while the actual api is still in development. In order to create a dummy api that resemebles the actual one, we need to define the api endpoints and the schema very quickly during the project. Tools like OpenApi can be very helpful in this case.  
+This project shows how Node can be used to create a simple dummy api for testing while the actual api is still in development. In order to create a dummy api that resembles the actual one, we need to define the api endpoints and the schema very quickly during the project. Tools like OpenApi can be very helpful in this case.  
   
-Even if developers are not familiar with how to use OpenApi to describe api endpoints, you should be able to use json to create sample data of what is expected from th api.
+Even if developers are not familiar with how to use OpenApi to describe api endpoints, you should be able to use json to create sample data of what is expected from the api.
 
 
 ## scenario - an api serving students data
@@ -100,7 +100,7 @@ In this example we will create an api that returns student data. Three methods w
 These three methods could provide the web team something to start with and establish the code for interacting with an api which is going to be needed once the final api is ready.
 
 ### 4. write methods in the service to return the dummy data
-Next step is to create methods in the service to return data for each route. For instance we need a method that searches in the dummy data and return a record that matches a given id. This exactly what we want to do when we get data from the actual api.   
+Next step is to create methods in the service to return data for each route. For instance we need a method that searches in the dummy data and return a record that matches a given id. This is exactly what we want to do when we get data from the actual api.   
 
 Below is an example of such method.
 ![sample service method](https://github.com/kowusu01/RapidPrototypingWithExpressJs/blob/main/docs/service-with-fake-data-and-method.PNG?raw=true)
@@ -116,46 +116,8 @@ Node ExpressJs is used as the http server, with the api endpoints designed to mi
 ![sample route method](https://github.com/kowusu01/RapidPrototypingWithExpressJs/blob/main/docs/partial-appjs.PNG?raw=true)
 
 
-### consuming the api
+### 7. consuming the api
 Once the api is setup, it can be integrated into the frontend and consumed just like any api. 
-
-
-## How the app is constructed
-
-1. the application is made up of four components:
-     - **app.js** - application entry point
-     - **controller** (students-controller.js) -  to intercept requests from the browser, *expressjs* calls the controllers routers, see **app_modules/controllers**  
-     - **services** (StudentsService) - which include methods for serving data. currently the data is hardcoded in the services, and are encapsulated in the controller.
-       - the services are TypeScript files and are compiled and copied to the app_modules folder during build
-     - **commonLib** - the file contains shared functions used in the controller
-
-2. the **app.js**:
-      - the app.js file lives at the root of the project 
-      - at runtime, it creates the expressjs object
-      - loads the controller, the controller loads the service 
-      - starts http server on a selected port
-  
-3. source and output folders:  
-	- all source files are in the __src__ folder  
-	- when the app builds, it copies all files needed to run the app into the __app_modules__ folder 
-	
-
-![app structure](https://github.com/kowusu01/RapidPrototypingWithExpressJs/blob/main/docs/SimpleJsApiStructure.jpg?raw=true)
-
-  
-## How to execute the app
-note: all commands are executed in the bash terminal
-1. execute ` npm update `
-2. execute ` npm run build-all `
-3. execute 
-     ` node app.js `  or     ` npm run start `    or    `nodemon app.js ` 
-     
-- Note: nodemon is a js package to monitor files so you can edit js files, save and refresh the browser while running
-- you may have to manually install nodemon  ( npm install -g nodemon )
-- when the app starts, take note of the url : e.g. localhost:8080/api/your-endpoint
-- enter the url in a browser to test
-- check the code to see where you can customize it
-  
 
 ## Sample resquests
     
@@ -189,8 +151,45 @@ e.g. http://localhost:3500/api/student/list/page/1
 
 ---  
 
+## How the app is constructed
+
+1. the application is made up of four components:
+     - **app.js** - application entry point
+     - **controller** (students-controller.js) -  to intercept requests from the browser, *expressjs* calls the controllers routers, see **app_modules/controllers**  
+     - **services** (StudentsService) - which include methods for serving data. currently the data is hardcoded in the services, and are encapsulated in the controller.
+       - the services are TypeScript files and are compiled and copied to the app_modules folder during build
+     - **commonLib** - the file contains shared functions used in the controller
+
+2. the **app.js**:
+      - the app.js file lives at the root of the project 
+      - at runtime, it creates the expressjs object
+      - loads the controller, the controller loads the service 
+      - starts http server on a selected port
+  
+3. source and output folders:  
+	- all source files are in the __src__ folder  
+	- when the app builds, it copies all files needed to run the app into the __app_modules__ folder 
+	
+
+![app structure](https://github.com/kowusu01/RapidPrototypingWithExpressJs/blob/main/docs/SimpleJsApiStructure.jpg?raw=true)
+
+
+## How to execute the app
+note: all commands are executed in the bash terminal
+1. execute ` npm update `
+2. execute ` npm run build-all `
+3. execute 
+     ` node app.js `  or     ` npm run start `    or    `nodemon app.js ` 
+     
+- Note: nodemon is a js package to monitor files so you can edit js files, save and refresh the browser while running
+- you may have to manually install nodemon  ( npm install -g nodemon )
+- when the app starts, take note of the url : e.g. localhost:8080/api/your-endpoint
+- enter the url in a browser to test
+- check the code to see where you can customize it
+  
+
 ## conclusion
-This demonstrated how Node, Javascript, ExpressJS can be used for rapid prototyping. It showed how an api can be created on the frontend side to eliminate a dependency and allow development to proceed without delay.  
+This project demonstrated how Node, Javascript, and ExpressJS can be used for rapid prototyping. It showed how an api can be created on the frontend side to eliminate a dependency and allow development to proceed without delay.  
   
 
 The main advantage for this approach is that since this was done in Javascript, it's more likely to fall into the same technology stack the frontend team is using and blend nicely into their work. The frontend team can modify or create more dummy data, add more more api methods, and test the frontend as needed without having to wait for the backend team to complete the final api. This can speed up work and improve productivity.
