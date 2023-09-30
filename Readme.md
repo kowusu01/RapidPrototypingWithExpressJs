@@ -9,17 +9,20 @@ I am not expert in modern javascript, as you will later discover from my javascr
 Many applications are made up of layers or components, the front end, the backend, the database, etc.
 Some of the most difficult issues in application development is integrating with layers and dependencies.  
 
-For instance, consider a simple application made up of a web tier consuming data from an backend api. Initially the web tier cannot make much progress because the api is not available.  
-  
+### a frontend app may depend on a backend api for data
+Consider a simple application made up of a web tier consuming data from an backend api.
+
+
+### the web tier often waits for the api to be ready
 In some cases the api may be ready but it may be on a remote server and requires connectivity and access tokens. It often turn out that the api is also administered by a different group, and therefore as a consumer, you may not be able to create your own test data to use.  
   
-### working around dependencies is hard, results in wasted project time
-This creates a huge dependency issue that is often difficult  to work around and most developers simply wait till they have something to work with. This results in many wasted hours of development time and pushes all the work to the final weeks of the project.  
+### Waiting for dependencies is waited project resources
+Working around dependencies is hard, results in wasted project time. Inexperienced developers often wait till they have something to work with. This results in many wasted hours of development time and pushes all the work to the final weeks of the project.  
 
 In remote work environments where there is often large time differences between clients and developers, teams may encounter issues and not get the right support at the right time.  For remote developers to remain productive, they need to learn techniques to reduce development dependencies.  But how does one do that? 
 
 ### attempt to remove dependencies are much as possible
-One idea is to duplicate the development environment locally as much as possible. With technologies like docker, it is much easier to create such environments locally that it was a few years ago.
+One idea is to duplicate the development environment locally as much as possible. With technologies like docker, it is much easier to create such environments locally than it was a few years ago.
 
 For instance, the whole backend api can be dockerized and shared so that developers can run it locally. Another method would be to create a dummy api that serves data similar to what the real api will serve. This gives you, the developer a lot of flexibility especially when creating test data.  
 
