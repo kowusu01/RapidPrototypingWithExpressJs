@@ -16,7 +16,7 @@ Consider a simple application made up of a web tier consuming data from an backe
 ### the web tier often waits for the api to be ready
 In some cases the api may be ready but it may be on a remote server and requires connectivity and access tokens. It often turn out that the api is also administered by a different group, and therefore as a consumer, you may not be able to create your own test data to use.  
   
-### Waiting for dependencies is waited project resources
+### Waiting for dependencies is wasted project resources
 Working around dependencies is hard, results in wasted project time. Inexperienced developers often wait till they have something to work with. This results in many wasted hours of development time and pushes all the work to the final weeks of the project.  
 
 In remote work environments where there is often large time differences between clients and developers, teams may encounter issues and not get the right support at the right time.  For remote developers to remain productive, they need to learn techniques to reduce development dependencies.  But how does one do that? 
